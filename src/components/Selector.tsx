@@ -1,9 +1,10 @@
 import * as React from "react";
 
-import { Rating, ResultSort } from "../types";
+import { Rating, ResultSort, IGifObject } from "../types";
 import { GiphyClient, ISearchResult } from "../lib/GiphyClient";
 import { SearchInput } from "./SearchInput";
 import { Suggestions } from "./Suggestions";
+import { SearchResults } from "./SearchResults";
 
 export interface ISelectorProps {
   apiKey: string;
@@ -11,6 +12,7 @@ export interface ISelectorProps {
   sort: ResultSort;
   limit: number;
   suggestions: string[];
+  onGifSelected: (gifObject: IGifObject) => void;
 }
 
 export interface ISelectorState {
@@ -54,9 +56,9 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * search
    * @param q string
    */
-  public onQueryChange(q: string): void {
+  public onQueryChange(q: string, cb?: () => void): void {
     // Update the query
-    this.setState({ query: q });
+    this.setState({ query: q }, cb);
   }
 
   /**
@@ -97,13 +99,14 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * Fired when a suggestion has been selected
    */
   public onSuggestionSelected(q: string): void {
-    this.onQueryChange(q);
-    this.onQueryExecute();
+    this.onQueryChange(q, () => {
+      this.onQueryExecute();
+    });
   }
 
   public render(): JSX.Element {
     const { query, searchResult, isPending, searchError } = this.state;
-    const { suggestions } = this.props;
+    const { suggestions, onGifSelected } = this.props;
 
     const showSuggestions =
       !!suggestions.length && !searchResult && !isPending && !searchError;
@@ -126,6 +129,14 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
         {isPending && <div>Loading</div>}
 
         {!isPending && !!searchError && <div>Error: {searchError.message}</div>}
+
+        {!isPending &&
+          !!searchResult && (
+            <SearchResults
+              gifObjects={searchResult.gifObjects}
+              onGifSelected={onGifSelected}
+            />
+          )}
       </div>
     );
   }

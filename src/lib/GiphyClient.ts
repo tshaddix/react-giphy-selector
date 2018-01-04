@@ -2,17 +2,7 @@
 // found here: https://github.com/Giphy/giphy-js-sdk-core
 import * as GiphyJSClient from "giphy-js-sdk-core";
 
-import { Rating, ResultSort } from "../types";
-
-export interface IGifObject {
-  id: string;
-  slug: string;
-  url: string;
-  embedUrl: string;
-  source: string;
-  rating: Rating;
-  title: string;
-}
+import { Rating, ResultSort, IGifObject } from "../types";
 
 export interface ISearchParams {
   q: string;
@@ -23,7 +13,7 @@ export interface ISearchParams {
 }
 
 export interface ISearchResult {
-  gifs: IGifObject[];
+  gifObjects: IGifObject[];
 }
 
 export class GiphyClient {
@@ -40,17 +30,7 @@ export class GiphyClient {
    */
   public searchGifs(params: ISearchParams): Promise<ISearchResult> {
     return this.client.search("gifs", params).then(response => {
-      return response.data.map(rawGifObject => {
-        return {
-          id: rawGifObject.id,
-          slug: rawGifObject.slug,
-          url: rawGifObject.url,
-          embedUrl: rawGifObject.embed_url,
-          source: rawGifObject.source,
-          rating: rawGifObject.rating,
-          title: rawGifObject.title
-        };
-      });
+      return {gifObjects: response.data};
     });
   }
 }

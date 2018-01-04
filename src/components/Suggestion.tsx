@@ -19,8 +19,12 @@ export class Suggestion extends React.Component<ISuggestionProps, {}> {
   }
 
   public render(): JSX.Element {
-    const { suggestion, onSelected } = this.props;
+    const { suggestion } = this.props;
 
-    return <a href="javascript:void(0)" onClick={this.onClick}>{suggestion}</a>;
+    return (
+      <a href="javascript:void(0)" onClick={this.onClick}>
+        {suggestion}
+      </a>
+    );
   }
 }

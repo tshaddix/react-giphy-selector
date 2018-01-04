@@ -954,28 +954,42 @@ var lib_1 = __webpack_require__(15);
 var React = __webpack_require__(4);
 var ReactDOM = __webpack_require__(19);
 // feel free to change these :)
-var suggestions = ["stop it", "nice one", "look up", "no", "bad"];
+var suggestions = ["watching", "quiz", "stop it", "nice one", "learn", "no", "read", "work"];
 var ExampleApp = /** @class */ (function (_super) {
     __extends(ExampleApp, _super);
     function ExampleApp(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            apiKey: ""
+            apiKey: "",
+            isKeySubmitted: false
         };
         _this.onKeyChange = _this.onKeyChange.bind(_this);
+        _this.onKeySubmit = _this.onKeySubmit.bind(_this);
+        _this.onGifSelected = _this.onGifSelected.bind(_this);
         return _this;
     }
     ExampleApp.prototype.onKeyChange = function (event) {
         this.setState({ apiKey: event.target.value });
     };
+    ExampleApp.prototype.onKeySubmit = function (event) {
+        event.preventDefault();
+        this.setState({
+            isKeySubmitted: true
+        });
+    };
+    ExampleApp.prototype.onGifSelected = function (gifObject) {
+        console.dir(gifObject);
+    };
     ExampleApp.prototype.render = function () {
-        var apiKey = this.state.apiKey;
+        var _a = this.state, apiKey = _a.apiKey, isKeySubmitted = _a.isKeySubmitted;
         var suggestions = this.props.suggestions;
+        if (!isKeySubmitted) {
+            return (React.createElement("form", { onSubmit: this.onKeySubmit },
+                React.createElement("input", { type: "text", placeholder: "Enter your Giphy API Key", value: apiKey, onChange: this.onKeyChange }),
+                React.createElement("button", { type: "submit" }, "Set API Key")));
+        }
         return (React.createElement("div", null,
-            React.createElement("div", null,
-                React.createElement("input", { type: "text", placeholder: "Enter your Giphy API Key", value: apiKey, onChange: this.onKeyChange })),
-            React.createElement("div", null,
-                React.createElement(lib_1.Selector, { apiKey: apiKey, suggestions: suggestions }))));
+            React.createElement(lib_1.Selector, { apiKey: apiKey, suggestions: suggestions, onGifSelected: this.onGifSelected })));
     };
     return ExampleApp;
 }(React.Component));
@@ -18764,6 +18778,7 @@ var types_1 = __webpack_require__(16);
 var GiphyClient_1 = __webpack_require__(17);
 var SearchInput_1 = __webpack_require__(33);
 var Suggestions_1 = __webpack_require__(34);
+var SearchResults_1 = __webpack_require__(36);
 var Selector = /** @class */ (function (_super) {
     __extends(Selector, _super);
     function Selector(props) {
@@ -18787,9 +18802,9 @@ var Selector = /** @class */ (function (_super) {
      * search
      * @param q string
      */
-    Selector.prototype.onQueryChange = function (q) {
+    Selector.prototype.onQueryChange = function (q, cb) {
         // Update the query
-        this.setState({ query: q });
+        this.setState({ query: q }, cb);
     };
     /**
      * Fired when the query should be executed
@@ -18827,12 +18842,14 @@ var Selector = /** @class */ (function (_super) {
      * Fired when a suggestion has been selected
      */
     Selector.prototype.onSuggestionSelected = function (q) {
-        this.onQueryChange(q);
-        this.onQueryExecute();
+        var _this = this;
+        this.onQueryChange(q, function () {
+            _this.onQueryExecute();
+        });
     };
     Selector.prototype.render = function () {
         var _a = this.state, query = _a.query, searchResult = _a.searchResult, isPending = _a.isPending, searchError = _a.searchError;
-        var suggestions = this.props.suggestions;
+        var _b = this.props, suggestions = _b.suggestions, onGifSelected = _b.onGifSelected;
         var showSuggestions = !!suggestions.length && !searchResult && !isPending && !searchError;
         return (React.createElement("div", null,
             React.createElement(SearchInput_1.SearchInput, { onQueryChange: this.onQueryChange, onQueryExecute: this.onQueryExecute, queryValue: query }),
@@ -18840,7 +18857,9 @@ var Selector = /** @class */ (function (_super) {
             isPending && React.createElement("div", null, "Loading"),
             !isPending && !!searchError && React.createElement("div", null,
                 "Error: ",
-                searchError.message)));
+                searchError.message),
+            !isPending &&
+                !!searchResult && (React.createElement(SearchResults_1.SearchResults, { gifObjects: searchResult.gifObjects, onGifSelected: onGifSelected }))));
     };
     Selector.defaultProps = {
         rating: types_1.Rating.G,
@@ -20375,17 +20394,7 @@ var GiphyClient = /** @class */ (function () {
      */
     GiphyClient.prototype.searchGifs = function (params) {
         return this.client.search("gifs", params).then(function (response) {
-            return response.data.map(function (rawGifObject) {
-                return {
-                    id: rawGifObject.id,
-                    slug: rawGifObject.slug,
-                    url: rawGifObject.url,
-                    embedUrl: rawGifObject.embed_url,
-                    source: rawGifObject.source,
-                    rating: rawGifObject.rating,
-                    title: rawGifObject.title
-                };
-            });
+            return { gifObjects: response.data };
         });
     };
     return GiphyClient;
@@ -22955,12 +22964,91 @@ var Suggestion = /** @class */ (function (_super) {
         this.props.onSelected(this.props.suggestion);
     };
     Suggestion.prototype.render = function () {
-        var _a = this.props, suggestion = _a.suggestion, onSelected = _a.onSelected;
-        return React.createElement("a", { href: "javascript:void(0)", onClick: this.onClick }, suggestion);
+        var suggestion = this.props.suggestion;
+        return (React.createElement("a", { href: "javascript:void(0)", onClick: this.onClick }, suggestion));
     };
     return Suggestion;
 }(React.Component));
 exports.Suggestion = Suggestion;
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var SearchResult_1 = __webpack_require__(37);
+var SearchResults = /** @class */ (function (_super) {
+    __extends(SearchResults, _super);
+    function SearchResults(props) {
+        return _super.call(this, props) || this;
+    }
+    SearchResults.prototype.render = function () {
+        var _a = this.props, gifObjects = _a.gifObjects, onGifSelected = _a.onGifSelected;
+        return (React.createElement("div", null, gifObjects.map(function (gifObject) { return (React.createElement(SearchResult_1.SearchResult, { key: gifObject.id, gifObject: gifObject, onSelected: onGifSelected })); })));
+    };
+    return SearchResults;
+}(React.Component));
+exports.SearchResults = SearchResults;
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(1);
+var SearchResult = /** @class */ (function (_super) {
+    __extends(SearchResult, _super);
+    function SearchResult(props) {
+        var _this = _super.call(this, props) || this;
+        _this.onClick = _this.onClick.bind(_this);
+        return _this;
+    }
+    SearchResult.prototype.onClick = function (event) {
+        event.preventDefault();
+        this.props.onSelected(this.props.gifObject);
+    };
+    SearchResult.prototype.render = function () {
+        var gifObject = this.props.gifObject;
+        console.dir(gifObject);
+        var sourceImage = gifObject.images.fixed_height_small;
+        var style = {
+            width: sourceImage.width + "px",
+            height: sourceImage.height + "px",
+            background: "url(" + sourceImage.gif_url + ")",
+            display: "block"
+        };
+        return React.createElement("a", { href: "javascript:void(0)", onClick: this.onClick, style: style });
+    };
+    return SearchResult;
+}(React.Component));
+exports.SearchResult = SearchResult;
 
 
 /***/ })

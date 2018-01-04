@@ -1,0 +1,36 @@
+{
+  "name": "react-giphy-selector",
+  "version": "0.0.1",
+  "description": "A search modal for picking the perfect giphy.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack",
+    "build-example": "npm run build && ./node_modules/.bin/webpack --config example/webpack.config.js",
+    "format": "./node_modules/.bin/prettier es5 --write \"{{src, example}/**/*.{js,ts,tsx},webpack.config.js}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tshaddix/react-giphy-selector.git"
+  },
+  "author": "Tyler Shaddix <tylershaddix@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tshaddix/react-giphy-selector/issues"
+  },
+  "homepage": "https://github.com/tshaddix/react-giphy-selector#readme",
+  "devDependencies": {
+    "@types/react-dom": "^16.0.3",
+    "awesome-typescript-loader": "^3.4.1",
+    "prettier": "^1.9.2",
+    "react-dom": "^16.2.0",
+    "source-map-loader": "^0.2.3",
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "@types/react": "^16.0.33",
+    "giphy-js-sdk-core": "^1.0.2",
+    "react": "^16.2.0"
+  }
+}

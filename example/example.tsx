@@ -1,10 +1,9 @@
-import {Selector} from '../lib';
-import * as Lib from '../lib';
+import {Selector, Rating} from '../lib';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 // feel free to change these :)
-const suggestions = ["watching", "quiz", "stop it", "nice one", "learn", "no", "read", "work"];
+const suggestions = ["watching", "quiz", "stop it", "nice one", "learning", "reading", "working"];
 
 interface IExampleProps {
   suggestions: string[];
@@ -63,7 +62,7 @@ class ExampleApp extends React.Component<IExampleProps, IExampleState> {
     
     return (
       <div>
-        <Selector apiKey={apiKey} suggestions={suggestions} onGifSelected={this.onGifSelected}/>
+        <Selector apiKey={apiKey} suggestions={suggestions} onGifSelected={this.onGifSelected} rating={Rating.G}/>
       </div>
     );
   }

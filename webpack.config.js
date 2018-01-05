@@ -28,7 +28,14 @@ module.exports = {
       {
         test: /\.css$/,
         loader: ["style-loader", "css-loader?sourceMap&modules"]
-      }
+      },
+      
+      // Load png files via 'url-loader'
+      {
+        test: /\.png$/,
+        loader: "url-loader",
+        query: { mimetype: "image/png" }
+      },
     ]
   }
 };

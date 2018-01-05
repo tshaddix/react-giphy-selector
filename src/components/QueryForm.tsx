@@ -1,5 +1,7 @@
 import * as React from "react";
 
+const style = require("./QueryForm.css");
+
 export interface IQueryFormProps {
   onQueryChange: (q: string) => void;
   onQueryExecute: () => void;
@@ -37,7 +39,7 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
 
     return (
       <div>
-        <form onSubmit={this.onSubmit}>
+        <form className={style.queryForm} onSubmit={this.onSubmit}>
           <input
             value={queryValue}
             type="text"

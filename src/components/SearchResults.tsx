@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { IGifObject } from "../types";
 import { SearchResult } from "./SearchResult";
+const style = require("./SearchResults.css");
 
 export interface ISearchResultsProps {
   gifObjects: IGifObject[];
@@ -13,9 +14,13 @@ export class SearchResults extends React.Component<ISearchResultsProps, {}> {
     super(props);
   }
 
-  private getColumnGifs(
-    gifObjects: Array<IGifObject>
-  ): Array<Array<IGifObject>> {
+  /**
+   * Given an array of gifs, compose them into an array of arrays, each top-level
+   * array representing a column and each second-level array representing the gifs
+   * in that column
+   * @param gifObjects
+   */
+  public getColumnGifs(gifObjects: IGifObject[]): Array<Array<IGifObject>> {
     // todo: Potentially make this an argument/prop
     const numColumns = 3;
 
@@ -51,7 +56,7 @@ export class SearchResults extends React.Component<ISearchResultsProps, {}> {
     const columnGifs = this.getColumnGifs(gifObjects);
 
     return (
-      <ul>
+      <ul className={style.searchResults}>
         {columnGifs.map((column: IGifObject[], c: number) => (
           <li key={`column-${c}`}>
             <ul>

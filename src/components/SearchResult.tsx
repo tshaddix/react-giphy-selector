@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { IGifObject, IGifImage } from "../types";
+const style = require("./SearchResult.css");
 
 export interface ISearchResultProps {
   gifObject: IGifObject;
@@ -25,16 +26,15 @@ export class SearchResult extends React.Component<ISearchResultProps, {}> {
 
     const sourceImage: IGifImage = gifObject.images.fixed_width;
 
-    const style = {
-      width: `${sourceImage.width}px`,
-      height: `${sourceImage.height}px`,
-      background: `url(${sourceImage.gif_url})`,
-      display: "block"
-    };
-
     return (
       <li>
-        <a href="javascript:void(0)" onClick={this.onClick} style={style} />
+        <a
+          href="javascript:void(0)"
+          onClick={this.onClick}
+          className={style.searchResult}
+        >
+          <img src={sourceImage.gif_url} />
+        </a>
       </li>
     );
   }

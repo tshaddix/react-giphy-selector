@@ -5,6 +5,8 @@ import { GiphyClient, ISearchResult } from "../lib/GiphyClient";
 import { QueryForm } from "./QueryForm";
 import { Suggestions } from "./Suggestions";
 import { SearchResults } from "./SearchResults";
+const style = require("./Selector.css");
+const attributionMark = require("../img/PoweredBy_200px-White_HorizText.png");
 
 export interface ISelectorProps {
   apiKey: string;
@@ -143,6 +145,9 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
               onGifSelected={onGifSelected}
             />
           )}
+        <footer className={style.footer}>
+          <img className={style.attributionMark} src={attributionMark} />
+        </footer>
       </div>
     );
   }

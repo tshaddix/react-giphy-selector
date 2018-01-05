@@ -1,13 +1,14 @@
 import * as React from "react";
 
-export interface ISearchInputProps {
+export interface IQueryFormProps {
   onQueryChange: (q: string) => void;
   onQueryExecute: () => void;
+  queryInputPlaceholder: string;
   queryValue: string;
 }
 
-export class SearchInput extends React.Component<ISearchInputProps, {}> {
-  constructor(props: ISearchInputProps) {
+export class QueryForm extends React.Component<IQueryFormProps, {}> {
+  constructor(props: IQueryFormProps) {
     super(props);
 
     this.onValueChange = this.onValueChange.bind(this);
@@ -32,12 +33,17 @@ export class SearchInput extends React.Component<ISearchInputProps, {}> {
   }
 
   public render(): JSX.Element {
-    const { queryValue } = this.props;
+    const { queryValue, queryInputPlaceholder } = this.props;
 
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <input value={queryValue} type="text" onChange={this.onValueChange} />
+          <input
+            value={queryValue}
+            type="text"
+            onChange={this.onValueChange}
+            placeholder={queryInputPlaceholder}
+          />
           <button type="submit">Search</button>
         </form>
       </div>

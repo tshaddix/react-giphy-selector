@@ -23,7 +23,7 @@ export class SearchResult extends React.Component<ISearchResultProps, {}> {
   public render(): JSX.Element {
     const { gifObject } = this.props;
 
-    const sourceImage: IGifImage = gifObject.images.fixed_height_small;
+    const sourceImage: IGifImage = gifObject.images.fixed_width;
 
     const style = {
       width: `${sourceImage.width}px`,
@@ -32,6 +32,10 @@ export class SearchResult extends React.Component<ISearchResultProps, {}> {
       display: "block"
     };
 
-    return <a href="javascript:void(0)" onClick={this.onClick} style={style} />;
+    return (
+      <li>
+        <a href="javascript:void(0)" onClick={this.onClick} style={style} />
+      </li>
+    );
   }
 }

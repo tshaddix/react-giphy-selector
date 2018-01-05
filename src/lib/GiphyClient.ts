@@ -30,7 +30,7 @@ export class GiphyClient {
    */
   public searchGifs(params: ISearchParams): Promise<ISearchResult> {
     return this.client.search("gifs", params).then(response => {
-      return {gifObjects: response.data};
+      return { gifObjects: response.data };
     });
   }
 }

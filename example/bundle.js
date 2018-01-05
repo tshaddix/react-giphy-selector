@@ -18776,7 +18776,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var types_1 = __webpack_require__(16);
 var GiphyClient_1 = __webpack_require__(17);
-var SearchInput_1 = __webpack_require__(33);
+var QueryForm_1 = __webpack_require__(33);
 var Suggestions_1 = __webpack_require__(34);
 var SearchResults_1 = __webpack_require__(36);
 var Selector = /** @class */ (function (_super) {
@@ -18801,6 +18801,7 @@ var Selector = /** @class */ (function (_super) {
      * Fired when the query value changes for the
      * search
      * @param q string
+     * @param cb func optional callback for when state is done updating
      */
     Selector.prototype.onQueryChange = function (q, cb) {
         // Update the query
@@ -18843,16 +18844,18 @@ var Selector = /** @class */ (function (_super) {
      */
     Selector.prototype.onSuggestionSelected = function (q) {
         var _this = this;
+        // Update query and wait for state change to finish
+        // before executing query
         this.onQueryChange(q, function () {
             _this.onQueryExecute();
         });
     };
     Selector.prototype.render = function () {
         var _a = this.state, query = _a.query, searchResult = _a.searchResult, isPending = _a.isPending, searchError = _a.searchError;
-        var _b = this.props, suggestions = _b.suggestions, onGifSelected = _b.onGifSelected;
+        var _b = this.props, suggestions = _b.suggestions, onGifSelected = _b.onGifSelected, queryInputPlaceholder = _b.queryInputPlaceholder;
         var showSuggestions = !!suggestions.length && !searchResult && !isPending && !searchError;
         return (React.createElement("div", null,
-            React.createElement(SearchInput_1.SearchInput, { onQueryChange: this.onQueryChange, onQueryExecute: this.onQueryExecute, queryValue: query }),
+            React.createElement(QueryForm_1.QueryForm, { queryInputPlaceholder: queryInputPlaceholder, onQueryChange: this.onQueryChange, onQueryExecute: this.onQueryExecute, queryValue: query }),
             showSuggestions && (React.createElement(Suggestions_1.Suggestions, { suggestions: suggestions, onSuggestionSelected: this.onSuggestionSelected })),
             isPending && React.createElement("div", null, "Loading"),
             !isPending && !!searchError && React.createElement("div", null,
@@ -18865,6 +18868,7 @@ var Selector = /** @class */ (function (_super) {
         rating: types_1.Rating.G,
         sort: types_1.ResultSort.Relevant,
         limit: 20,
+        queryInputPlaceholder: 'Search for gifs (e.g. "dogs")',
         suggestions: []
     };
     return Selector;
@@ -22866,9 +22870,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
-var SearchInput = /** @class */ (function (_super) {
-    __extends(SearchInput, _super);
-    function SearchInput(props) {
+var QueryForm = /** @class */ (function (_super) {
+    __extends(QueryForm, _super);
+    function QueryForm(props) {
         var _this = _super.call(this, props) || this;
         _this.onValueChange = _this.onValueChange.bind(_this);
         _this.onSubmit = _this.onSubmit.bind(_this);
@@ -22878,27 +22882,27 @@ var SearchInput = /** @class */ (function (_super) {
      * Fires when the search input box has changed value
      * @param event
      */
-    SearchInput.prototype.onValueChange = function (event) {
+    QueryForm.prototype.onValueChange = function (event) {
         this.props.onQueryChange(event.target.value || "");
     };
     /**
      * Fires when the form has been submitted (via "enter" or button)
      * @param event
      */
-    SearchInput.prototype.onSubmit = function (event) {
+    QueryForm.prototype.onSubmit = function (event) {
         event.preventDefault();
         this.props.onQueryExecute();
     };
-    SearchInput.prototype.render = function () {
-        var queryValue = this.props.queryValue;
+    QueryForm.prototype.render = function () {
+        var _a = this.props, queryValue = _a.queryValue, queryInputPlaceholder = _a.queryInputPlaceholder;
         return (React.createElement("div", null,
             React.createElement("form", { onSubmit: this.onSubmit },
-                React.createElement("input", { value: queryValue, type: "text", onChange: this.onValueChange }),
+                React.createElement("input", { value: queryValue, type: "text", onChange: this.onValueChange, placeholder: queryInputPlaceholder }),
                 React.createElement("button", { type: "submit" }, "Search"))));
     };
-    return SearchInput;
+    return QueryForm;
 }(React.Component));
-exports.SearchInput = SearchInput;
+exports.QueryForm = QueryForm;
 
 
 /***/ }),
@@ -22996,9 +23000,32 @@ var SearchResults = /** @class */ (function (_super) {
     function SearchResults(props) {
         return _super.call(this, props) || this;
     }
+    SearchResults.prototype.getColumnGifs = function (gifObjects) {
+        // todo: Potentially make this an argument/prop
+        var numColumns = 3;
+        var columnsGifs = [];
+        var c = 0;
+        // fill column array with arrays representing column contents
+        while (c < numColumns) {
+            columnsGifs.push([]);
+            c++;
+        }
+        var j = 0;
+        // sort gifs into columns
+        gifObjects.forEach(function (gifObject) {
+            columnsGifs[j].push(gifObject);
+            j++;
+            if (j === numColumns) {
+                j = 0;
+            }
+        });
+        return columnsGifs;
+    };
     SearchResults.prototype.render = function () {
         var _a = this.props, gifObjects = _a.gifObjects, onGifSelected = _a.onGifSelected;
-        return (React.createElement("div", null, gifObjects.map(function (gifObject) { return (React.createElement(SearchResult_1.SearchResult, { key: gifObject.id, gifObject: gifObject, onSelected: onGifSelected })); })));
+        var columnGifs = this.getColumnGifs(gifObjects);
+        return (React.createElement("ul", null, columnGifs.map(function (column, c) { return (React.createElement("li", { key: "column-" + c },
+            React.createElement("ul", null, column.map(function (gifObject) { return (React.createElement(SearchResult_1.SearchResult, { key: gifObject.id, gifObject: gifObject, onSelected: onGifSelected })); })))); })));
     };
     return SearchResults;
 }(React.Component));
@@ -23036,15 +23063,15 @@ var SearchResult = /** @class */ (function (_super) {
     };
     SearchResult.prototype.render = function () {
         var gifObject = this.props.gifObject;
-        console.dir(gifObject);
-        var sourceImage = gifObject.images.fixed_height_small;
+        var sourceImage = gifObject.images.fixed_width;
         var style = {
             width: sourceImage.width + "px",
             height: sourceImage.height + "px",
             background: "url(" + sourceImage.gif_url + ")",
             display: "block"
         };
-        return React.createElement("a", { href: "javascript:void(0)", onClick: this.onClick, style: style });
+        return (React.createElement("li", null,
+            React.createElement("a", { href: "javascript:void(0)", onClick: this.onClick, style: style })));
     };
     return SearchResult;
 }(React.Component));

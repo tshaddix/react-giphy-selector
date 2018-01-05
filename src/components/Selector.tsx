@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Rating, ResultSort, IGifObject } from "../types";
 import { GiphyClient, ISearchResult } from "../lib/GiphyClient";
-import { SearchInput } from "./SearchInput";
+import { QueryForm } from "./QueryForm";
 import { Suggestions } from "./Suggestions";
 import { SearchResults } from "./SearchResults";
 
@@ -12,6 +12,7 @@ export interface ISelectorProps {
   sort: ResultSort;
   limit: number;
   suggestions: string[];
+  queryInputPlaceholder: string;
   onGifSelected: (gifObject: IGifObject) => void;
 }
 
@@ -27,6 +28,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
     rating: Rating.G,
     sort: ResultSort.Relevant,
     limit: 20,
+    queryInputPlaceholder: 'Search for gifs (e.g. "dogs")',
     suggestions: []
   };
 
@@ -55,6 +57,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * Fired when the query value changes for the
    * search
    * @param q string
+   * @param cb func optional callback for when state is done updating
    */
   public onQueryChange(q: string, cb?: () => void): void {
     // Update the query
@@ -99,6 +102,8 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * Fired when a suggestion has been selected
    */
   public onSuggestionSelected(q: string): void {
+    // Update query and wait for state change to finish
+    // before executing query
     this.onQueryChange(q, () => {
       this.onQueryExecute();
     });
@@ -106,14 +111,15 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
 
   public render(): JSX.Element {
     const { query, searchResult, isPending, searchError } = this.state;
-    const { suggestions, onGifSelected } = this.props;
+    const { suggestions, onGifSelected, queryInputPlaceholder } = this.props;
 
     const showSuggestions =
       !!suggestions.length && !searchResult && !isPending && !searchError;
 
     return (
       <div>
-        <SearchInput
+        <QueryForm
+          queryInputPlaceholder={queryInputPlaceholder}
           onQueryChange={this.onQueryChange}
           onQueryExecute={this.onQueryExecute}
           queryValue={query}

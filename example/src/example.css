@@ -1,0 +1,39 @@
+.customQueryFormSubmit {
+	background: #0097cf;
+	color: #fff;
+	border: 0;
+	padding: 10px 20px;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.customQueryFormInput {
+	padding-left: 10px;
+	padding-right: 10px;
+	border: 1px solid #e0e0e0;
+	border-right: 0;
+	box-shadow: none;
+}
+
+.customSearchResults {
+	max-height: 400px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/********************************
+CSS classes for example fake modal
+********************************/
+
+body {
+	background: #333;
+	font-family: sans-serif;
+}
+
+.modal {
+	max-width: 600px;
+	margin: 60px auto;
+	background: #fff;
+	padding: 20px;
+	border-bottom: 5px solid #111;
+}

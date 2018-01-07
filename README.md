@@ -44,7 +44,7 @@ The selector component contains all of the search, display, and selection logic.
 That said, there are a bunch of props that allow you to make this component your own. Note: the `?` included at the end of a property name denotes it as optional.
 
 - `apiKey: string`: [Your Giphy Project API Key](https://developers.giphy.com/).
-- `onGifSelected?: (gifObject: IGifObject) => void`: The function to fire when a gif search result has been selected. The `IGifObject` represents the full [GIF Object](https://developers.giphy.com/docs/#gif-object) returned via the Giphy API.
+- `onGifSelected: (gifObject: IGifObject) => void`: The function to fire when a gif search result has been selected. The `IGifObject` represents the full [GIF Object](https://developers.giphy.com/docs/#gif-object) returned via the Giphy API.
 - `rating?: Rating`: The maximum rating you want to allow in your search results. Use the exported [Rating](#rating) enum for help. Default: `Rating.G`.
 - `sort?: ResultSort`: The sort order of the search results. Use the helper enum [ResultSort](#resultsort). Default: `ResultSort.Relevant`.
 - `limit?: number`: The number of results to return. Default: `20`.

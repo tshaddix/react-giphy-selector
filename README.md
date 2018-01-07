@@ -1,5 +1,5 @@
 # react-giphy-selector
-A search and select React.JS component for picking the perfect giphy.
+A search and select React.JS component for picking the perfect gif from [GIPHY](https://giphy.com/).
 
 ![Example selector](./docs/example_1.gif)
 

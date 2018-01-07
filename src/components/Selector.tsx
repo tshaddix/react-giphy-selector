@@ -32,27 +32,27 @@ export interface ISelectorProps {
 
   // search results style
   searchResultsClassName?: string;
-  searchResultsStyle: object;
+  searchResultsStyle?: object;
   searchResultClassName?: string;
-  searchResultStyle: object;
+  searchResultStyle?: object;
 
   suggestionsClassName?: string;
-  suggestionsStyle: object;
+  suggestionsStyle?: object;
   suggestionClassName?: string;
-  suggestionStyle: object;
+  suggestionStyle?: object;
 
   // loader style/content props
   loaderClassName?: string;
-  loaderStyle: object;
+  loaderStyle?: object;
   loaderContent: any;
 
   // error style/content props
   searchErrorClassName?: string;
-  searchErrorStyle: object;
+  searchErrorStyle?: object;
 
   // footer style props
   footerClassName?: string;
-  footerStyle: object;
+  footerStyle?: object;
 }
 
 export interface ISelectorState {
@@ -69,7 +69,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
     limit: 20,
     resultColumns: 3,
     showGiphyMark: true,
-    queryInputPlaceholder: 'Search for gifs (e.g. "dogs")',
+    queryInputPlaceholder: 'Enter search text',
     suggestions: [],
     loaderContent: "Loading...",
     loaderStyle: {},

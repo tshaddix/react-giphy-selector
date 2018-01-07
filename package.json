@@ -1,14 +1,15 @@
 {
   "name": "react-giphy-selector",
   "version": "0.0.1",
-  "description": "A search modal for picking the perfect giphy.",
+  "description": "A search & select React.JS component for picking the perfect giphy.",
   "main": "lib/index.js",
   "typings": "./index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/webpack",
     "build-example": "./node_modules/.bin/webpack --config example/webpack.config.js",
-    "format": "./node_modules/.bin/prettier es5 --write \"{{src,example/src}/**/*.{js,ts,tsx},webpack.config.js}\""
+    "format": "./node_modules/.bin/prettier es5 --write \"{{src,example/src}/**/*.{js,ts,tsx},webpack.config.js}\"",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",

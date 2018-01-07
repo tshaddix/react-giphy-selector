@@ -1,21 +1,58 @@
 import * as React from "react";
+import * as cn from "classnames";
 
 import { Rating, ResultSort, IGifObject } from "../types";
 import { GiphyClient, ISearchResult } from "../lib/GiphyClient";
 import { QueryForm } from "./QueryForm";
 import { Suggestions } from "./Suggestions";
 import { SearchResults } from "./SearchResults";
-const style = require("./Selector.css");
+const defaultStyle = require("./Selector.css");
 const attributionMark = require("../img/PoweredBy_200px-White_HorizText.png");
 
 export interface ISelectorProps {
+  // main props
   apiKey: string;
   rating: Rating;
   sort: ResultSort;
   limit: number;
   suggestions: string[];
   queryInputPlaceholder: string;
+  resultColumns: number;
   onGifSelected: (gifObject: IGifObject) => void;
+  showGiphyMark: boolean;
+
+  // query form style/content props
+  queryFormClassName?: string;
+  queryFormInputClassName?: string;
+  queryFormSubmitClassName?: string;
+  queryFormStyle?: object;
+  queryFormInputStyle?: object;
+  queryFormSubmitStyle?: object;
+  queryFormSubmitContent: any;
+
+  // search results style
+  searchResultsClassName?: string;
+  searchResultsStyle: object;
+  searchResultClassName?: string;
+  searchResultStyle: object;
+
+  suggestionsClassName?: string;
+  suggestionsStyle: object;
+  suggestionClassName?: string;
+  suggestionStyle: object;
+
+  // loader style/content props
+  loaderClassName?: string;
+  loaderStyle: object;
+  loaderContent: any;
+
+  // error style/content props
+  searchErrorClassName?: string;
+  searchErrorStyle: object;
+
+  // footer style props
+  footerClassName?: string;
+  footerStyle: object;
 }
 
 export interface ISelectorState {
@@ -30,8 +67,19 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
     rating: Rating.G,
     sort: ResultSort.Relevant,
     limit: 20,
+    resultColumns: 3,
+    showGiphyMark: true,
     queryInputPlaceholder: 'Search for gifs (e.g. "dogs")',
-    suggestions: []
+    suggestions: [],
+    loaderContent: "Loading...",
+    loaderStyle: {},
+    queryFormSubmitContent: "Search",
+    footerStyle: {},
+    searchErrorStyle: {},
+    searchResultsStyle: {},
+    searchResultStyle: {},
+    suggestionStyle: {},
+    suggestionsStyle: {}
   };
 
   public client: GiphyClient;
@@ -113,7 +161,41 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
 
   public render(): JSX.Element {
     const { query, searchResult, isPending, searchError } = this.state;
-    const { suggestions, onGifSelected, queryInputPlaceholder } = this.props;
+    const {
+      suggestions,
+      onGifSelected,
+      queryInputPlaceholder,
+      resultColumns,
+      showGiphyMark,
+
+      queryFormClassName,
+      queryFormInputClassName,
+      queryFormSubmitClassName,
+      queryFormStyle,
+      queryFormInputStyle,
+      queryFormSubmitStyle,
+      queryFormSubmitContent,
+
+      searchResultClassName,
+      searchResultStyle,
+      searchResultsClassName,
+      searchResultsStyle,
+
+      suggestionClassName,
+      suggestionStyle,
+      suggestionsClassName,
+      suggestionsStyle,
+
+      loaderClassName,
+      loaderStyle,
+      loaderContent,
+
+      searchErrorClassName,
+      searchErrorStyle,
+
+      footerClassName,
+      footerStyle
+    } = this.props;
 
     const showSuggestions =
       !!suggestions.length && !searchResult && !isPending && !searchError;
@@ -125,28 +207,67 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
           onQueryChange={this.onQueryChange}
           onQueryExecute={this.onQueryExecute}
           queryValue={query}
+          queryFormClassName={queryFormClassName}
+          queryFormInputClassName={queryFormInputClassName}
+          queryFormSubmitClassName={queryFormSubmitClassName}
+          queryFormStyle={queryFormStyle}
+          queryFormInputStyle={queryFormInputStyle}
+          queryFormSubmitStyle={queryFormSubmitStyle}
+          queryFormSubmitContent={queryFormSubmitContent}
         />
 
         {showSuggestions && (
           <Suggestions
             suggestions={suggestions}
             onSuggestionSelected={this.onSuggestionSelected}
+            suggestionClassName={suggestionClassName}
+            suggestionStyle={suggestionStyle}
+            suggestionsClassName={suggestionsClassName}
+            suggestionsStyle={suggestionsStyle}
           />
         )}
 
-        {isPending && <div>Loading</div>}
+        {isPending && (
+          <div
+            className={cn(defaultStyle.loader, loaderClassName)}
+            style={loaderStyle}
+          >
+            {loaderContent}
+          </div>
+        )}
 
-        {!isPending && !!searchError && <div>Error: {searchError.message}</div>}
+        {!isPending &&
+          !!searchError && (
+            <div
+              className={cn(defaultStyle.searchError, searchErrorClassName)}
+              style={searchErrorStyle}
+            >
+              {searchError.message}
+            </div>
+          )}
 
         {!isPending &&
           !!searchResult && (
             <SearchResults
+              searchResultClassName={searchResultClassName}
+              searchResultStyle={searchResultStyle}
+              searchResultsClassName={searchResultsClassName}
+              searchResultsStyle={searchResultsStyle}
+              columns={resultColumns}
               gifObjects={searchResult.gifObjects}
               onGifSelected={onGifSelected}
             />
           )}
-        <footer className={style.footer}>
-          <img className={style.attributionMark} src={attributionMark} />
+        <footer
+          className={cn(defaultStyle.footer, footerClassName)}
+          style={footerStyle}
+        >
+          {showGiphyMark && (
+            <img
+              className={defaultStyle.attributionMark}
+              src={attributionMark}
+            />
+          )}
         </footer>
       </div>
     );

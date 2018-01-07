@@ -1,8 +1,13 @@
 import * as React from "react";
+import * as cn from "classnames";
+
+const defaultStyle = require("./Suggestion.css");
 
 export interface ISuggestionProps {
   suggestion: string;
   onSelected: (q: string) => void;
+  suggestionClassName?: string;
+  suggestionStyle: object;
 }
 
 export class Suggestion extends React.Component<ISuggestionProps, {}> {
@@ -19,10 +24,15 @@ export class Suggestion extends React.Component<ISuggestionProps, {}> {
   }
 
   public render(): JSX.Element {
-    const { suggestion } = this.props;
+    const { suggestion, suggestionClassName, suggestionStyle } = this.props;
 
     return (
-      <a href="javascript:void(0)" onClick={this.onClick}>
+      <a
+        style={suggestionStyle}
+        className={cn(defaultStyle.suggestion, suggestionClassName)}
+        href="javascript:void(0)"
+        onClick={this.onClick}
+      >
         {suggestion}
       </a>
     );

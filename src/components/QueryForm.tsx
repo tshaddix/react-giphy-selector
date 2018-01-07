@@ -1,8 +1,16 @@
 import * as React from "react";
+import * as cn from "classnames";
 
-const style = require("./QueryForm.css");
+const defaultStyle = require("./QueryForm.css");
 
 export interface IQueryFormProps {
+  queryFormClassName?: string;
+  queryFormInputClassName?: string;
+  queryFormSubmitClassName?: string;
+  queryFormStyle: object;
+  queryFormInputStyle: object;
+  queryFormSubmitStyle: object;
+  queryFormSubmitContent: any;
   onQueryChange: (q: string) => void;
   onQueryExecute: () => void;
   queryInputPlaceholder: string;
@@ -10,6 +18,12 @@ export interface IQueryFormProps {
 }
 
 export class QueryForm extends React.Component<IQueryFormProps, {}> {
+  public static defaultProps: Partial<IQueryFormProps> = {
+    queryFormStyle: {},
+    queryFormInputStyle: {},
+    queryFormSubmitStyle: {}
+  };
+
   constructor(props: IQueryFormProps) {
     super(props);
 
@@ -35,18 +49,43 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
   }
 
   public render(): JSX.Element {
-    const { queryValue, queryInputPlaceholder } = this.props;
+    const {
+      queryValue,
+      queryInputPlaceholder,
+      queryFormClassName,
+      queryFormInputClassName,
+      queryFormSubmitClassName,
+      queryFormStyle,
+      queryFormInputStyle,
+      queryFormSubmitStyle,
+      queryFormSubmitContent
+    } = this.props;
 
     return (
       <div>
-        <form className={style.queryForm} onSubmit={this.onSubmit}>
+        <form
+          style={queryFormStyle}
+          className={cn(defaultStyle.queryForm, queryFormClassName)}
+          onSubmit={this.onSubmit}
+        >
           <input
+            style={queryFormInputStyle}
+            className={cn(defaultStyle.queryFormInput, queryFormInputClassName)}
             value={queryValue}
             type="text"
             onChange={this.onValueChange}
             placeholder={queryInputPlaceholder}
           />
-          <button type="submit">Search</button>
+          <button
+            style={queryFormSubmitStyle}
+            type="submit"
+            className={cn(
+              defaultStyle.queryFormSubmit,
+              queryFormSubmitClassName
+            )}
+          >
+            {queryFormSubmitContent}
+          </button>
         </form>
       </div>
     );

@@ -1,11 +1,14 @@
 import * as React from "react";
+import * as cn from "classnames";
 
 import { IGifObject, IGifImage } from "../types";
-const style = require("./SearchResult.css");
+const defaultStyle = require("./SearchResult.css");
 
 export interface ISearchResultProps {
   gifObject: IGifObject;
   onSelected: (gifObject: IGifObject) => void;
+  searchResultClassName?: string;
+  searchResultStyle: object;
 }
 
 export class SearchResult extends React.Component<ISearchResultProps, {}> {
@@ -22,16 +25,17 @@ export class SearchResult extends React.Component<ISearchResultProps, {}> {
   }
 
   public render(): JSX.Element {
-    const { gifObject } = this.props;
+    const { gifObject, searchResultClassName, searchResultStyle } = this.props;
 
     const sourceImage: IGifImage = gifObject.images.fixed_width;
 
     return (
       <li>
         <a
+          style={searchResultStyle}
           href="javascript:void(0)"
           onClick={this.onClick}
-          className={style.searchResult}
+          className={cn(defaultStyle.searchResult, searchResultClassName)}
         >
           <img src={sourceImage.gif_url} />
         </a>

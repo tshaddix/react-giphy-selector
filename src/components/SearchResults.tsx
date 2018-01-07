@@ -1,17 +1,25 @@
 import * as React from "react";
+import * as cn from "classnames";
 
 import { IGifObject } from "../types";
 import { SearchResult } from "./SearchResult";
-const style = require("./SearchResults.css");
+const defaultStyle = require("./SearchResults.css");
 
 export interface ISearchResultsProps {
+  columns: number;
   gifObjects: IGifObject[];
   onGifSelected: (gifObject: IGifObject) => void;
+  searchResultsClassName?: string;
+  searchResultsStyle: object;
+  searchResultClassName?: string;
+  searchResultStyle: object;
 }
 
 export class SearchResults extends React.Component<ISearchResultsProps, {}> {
   constructor(props: ISearchResultsProps) {
     super(props);
+
+    this.getColumnGifs = this.getColumnGifs.bind(this);
   }
 
   /**
@@ -21,8 +29,7 @@ export class SearchResults extends React.Component<ISearchResultsProps, {}> {
    * @param gifObjects
    */
   public getColumnGifs(gifObjects: IGifObject[]): Array<Array<IGifObject>> {
-    // todo: Potentially make this an argument/prop
-    const numColumns = 3;
+    const numColumns = this.props.columns;
 
     const columnsGifs: Array<Array<IGifObject>> = [];
 
@@ -51,17 +58,29 @@ export class SearchResults extends React.Component<ISearchResultsProps, {}> {
   }
 
   public render(): JSX.Element {
-    const { gifObjects, onGifSelected } = this.props;
+    const {
+      gifObjects,
+      onGifSelected,
+      searchResultsClassName,
+      searchResultsStyle,
+      searchResultClassName,
+      searchResultStyle
+    } = this.props;
 
     const columnGifs = this.getColumnGifs(gifObjects);
 
     return (
-      <ul className={style.searchResults}>
+      <ul
+        style={searchResultsStyle}
+        className={cn(defaultStyle.searchResults, searchResultsClassName)}
+      >
         {columnGifs.map((column: IGifObject[], c: number) => (
           <li key={`column-${c}`}>
             <ul>
               {column.map((gifObject: IGifObject) => (
                 <SearchResult
+                  searchResultClassName={searchResultClassName}
+                  searchResultStyle={searchResultStyle}
                   key={gifObject.id}
                   gifObject={gifObject}
                   onSelected={onGifSelected}

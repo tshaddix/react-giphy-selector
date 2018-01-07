@@ -1,7 +1,6 @@
 .searchResult {
 	display: block;
 	text-decoration: none;
-	min-height: 1px;
 }
 
 .searchResult > img {

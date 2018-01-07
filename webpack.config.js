@@ -13,7 +13,7 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json", ".css"]
+    extensions: [".ts", ".tsx", ".js", ".json"]
   },
 
   module: {
@@ -29,13 +29,13 @@ module.exports = {
         test: /\.css$/,
         loader: ["style-loader", "css-loader?sourceMap&modules"]
       },
-      
+
       // Load png files via 'url-loader'
       {
         test: /\.png$/,
         loader: "url-loader",
         query: { mimetype: "image/png" }
-      },
+      }
     ]
   }
 };

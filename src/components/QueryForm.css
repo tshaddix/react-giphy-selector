@@ -1,16 +1,14 @@
 .queryForm {
 	display: flex;
 	padding: 5px;
-	margin-bottom: 5px;
-	border-bottom: 1px solid #e0e0e0;
 }
 
-.queryForm > input[type="text"] {
+.queryFormInput {
 	flex-grow: 2;
 	display: block;
 }
 
-.queryForm > button[type="submit"] {
+.queryFormSubmit {
 	flex-grow: 0;
 	display: block;
 }

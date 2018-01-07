@@ -81,6 +81,7 @@ class ExampleApp extends React.Component<IExampleProps, IExampleState> {
           suggestions={suggestions}
           onGifSelected={this.onGifSelected}
           rating={Rating.G}
+          limit={40}
           queryFormInputClassName={customStyle.customQueryFormInput}
           queryFormSubmitClassName={customStyle.customQueryFormSubmit}
           searchResultsClassName={customStyle.customSearchResults}

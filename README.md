@@ -1,7 +1,7 @@
 # react-giphy-selector
 A search and select React.JS component for picking the perfect giphy.
 
-{Insert Gif of Example Usage}
+![Example selector](./docs/example_1.gif)
 
 > This component is highly-customizable and only provides basic styling out-of-box. The example above includes simple customization to a few elements. You can view this example in `/example/src`.
 
@@ -59,7 +59,8 @@ There are a bunch of `props` to help you customize the style of the the selector
 
 The images below will help you understand the nomenclature of the components:
 
-{Insert images of component sections}
+![Diagram of component nomenclature for query form, suggestions, and footer](./docs/components_1.png)
+![Diagram of component nomenclature for search results](./docs/components_2.png)
 
 Here are all the props available for styling the component:
 

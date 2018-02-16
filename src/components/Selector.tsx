@@ -12,14 +12,14 @@ const attributionMark = require("../img/PoweredBy_200px-White_HorizText.png");
 export interface ISelectorProps {
   // main props
   apiKey: string;
-  rating: Rating;
-  sort: ResultSort;
-  limit: number;
-  suggestions: string[];
-  queryInputPlaceholder: string;
-  resultColumns: number;
+  rating?: Rating;
+  sort?: ResultSort;
+  limit?: number;
+  suggestions?: string[];
+  queryInputPlaceholder?: string;
+  resultColumns?: number;
   onGifSelected: (gifObject: IGifObject) => void;
-  showGiphyMark: boolean;
+  showGiphyMark?: boolean;
 
   // query form style/content props
   queryFormClassName?: string;
@@ -28,7 +28,7 @@ export interface ISelectorProps {
   queryFormStyle?: object;
   queryFormInputStyle?: object;
   queryFormSubmitStyle?: object;
-  queryFormSubmitContent: any;
+  queryFormSubmitContent?: any;
 
   // search results style
   searchResultsClassName?: string;
@@ -44,7 +44,7 @@ export interface ISelectorProps {
   // loader style/content props
   loaderClassName?: string;
   loaderStyle?: object;
-  loaderContent: any;
+  loaderContent?: any;
 
   // error style/content props
   searchErrorClassName?: string;

@@ -51,6 +51,7 @@ export class GiphyClient {
    */
   public trendingGifs(params: ITrendingParams): Promise<ISearchResult> {
     return this.client.trending("gifs", params).then(response => {
+      console.log("trendingGifs response", response);
       return { gifObjects: response.data };
     });
   }
@@ -61,6 +62,7 @@ export class GiphyClient {
    */
   public randomGifs(params: IRandomParams): Promise<ISearchResult> {
     return this.client.random("gifs", params).then(response => {
+      console.log("reandomGifs response", response);
       return { gifObjects: response.data };
     });
   }

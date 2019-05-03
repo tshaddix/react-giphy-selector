@@ -158,6 +158,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * Fired when the component is mounted if 
    */
   public onTrendingExecute(): void {
+    console.log("onRandomExecute");
     const { rating, limit } = this.props;
 
     this.setState({
@@ -172,12 +173,14 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
         offset: 0
       })
       .then((result: ISearchResult) => {
+        console.log("trending finished", result);
         this.setState({
           isPending: false,
           searchResult: result
         });
       })
       .catch((err: Error) => {
+        console.log("trending finished error", err);
         this.setState({
           isPending: false,
           searchError: err
@@ -189,7 +192,8 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * Fired when the component is mounted if preloadTrending is set
    */
   public onRandomExecute(): void {
-    const { preloadRandom } = this.props;
+    console.log("onRandomExecute");
+    const { preloadRandom, rating } = this.props;
 
     this.setState({
       isPending: true,
@@ -202,12 +206,14 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
         tag: preloadRandom
       })
       .then((result: ISearchResult) => {
+        console.log("random finished", result);
         this.setState({
           isPending: false,
           searchResult: result
         });
       })
       .catch((err: Error) => {
+        console.log("random finished err", err);
         this.setState({
           isPending: false,
           searchError: err
@@ -228,9 +234,9 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
 
   public componentDidMount() {
     if (this.props.preloadTrending) {
-      this.onTrendingExecute();
+      setTimeout(100, this.onTrendingExecute);
     } else if (this.props.preloadRandom.length > 0) {
-      this.onRandomExecute();
+      setTimeout(100, this.onRandomExecute);
     }
   }
 

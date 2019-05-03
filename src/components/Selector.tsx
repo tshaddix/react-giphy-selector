@@ -162,6 +162,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
     const { rating, limit } = this.props;
 
     this.setState({
+      isPending: true,
       searchError: null
     });
 

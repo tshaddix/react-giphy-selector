@@ -158,7 +158,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * Fired when the component is mounted if preloadTrending is set
    */
   public onTrendingExecute(): void {
-    console.log("DBG onRandomExecute");
+    console.log("DBG onTrendingExecute");
     const { rating, limit } = this.props;
 
     this.setState({
@@ -236,10 +236,10 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
     console.log("DBG componentDidMount preloadTrending", this.props.preloadTrending, "preloadRandom", this.props.preloadRandom);
     if (this.props.preloadTrending) {
       console.log("DBG   preloading trending!");
-      setTimeout(100, this.onTrendingExecute);
+      this.onTrendingExecute();
     } else if (this.props.preloadRandom.length > 0) {
       console.log("DBG   preloading random!");
-      setTimeout(100, this.onRandomExecute);
+      this.onRandomExecute();
     }
   }
 

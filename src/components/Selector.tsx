@@ -23,6 +23,7 @@ export interface ISelectorProps {
   preloadTrending?: boolean,
 
   // query form style/content props
+  containerClassName?: string;
   queryFormClassName?: string;
   queryFormInputClassName?: string;
   queryFormSubmitClassName?: string;
@@ -209,6 +210,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
       showGiphyMark,
       preloadTrending,
 
+      containerClassName,
       queryFormClassName,
       queryFormInputClassName,
       queryFormSubmitClassName,
@@ -242,7 +244,8 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
       !!suggestions.length && !searchResult && !isPending && !searchError;
 
     return (
-      <div>
+      <div
+        className={containerClassName}>
         <QueryForm
           queryInputPlaceholder={queryInputPlaceholder}
           onQueryChange={this.onQueryChange}

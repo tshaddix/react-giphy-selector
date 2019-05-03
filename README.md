@@ -64,6 +64,8 @@ The images below will help you understand the nomenclature of the components:
 
 Here are all the props available for styling the component:
 
+- `containerClassName?: string`: Additional `className` for the main container of the component.
+- `containerStyle?: string`: Additional `className` for the main container of the component.
 - `queryFormClassName?: string`: Additional `className` for the query form section of the component. You can find the default style applied in `src/components/QueryForm.css`.
 - `queryFormInputClassName?: string`: Additional `className` for the text input in the query form. You can find the default style applied in `src/components/QueryForm.css`.
 - `queryFormSubmitClassName?: string`: Additional `className` for the submit button in the query form. You can find the default style applied in `src/components/QueryForm.css`.

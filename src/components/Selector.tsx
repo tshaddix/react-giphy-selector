@@ -22,8 +22,11 @@ export interface ISelectorProps {
   showGiphyMark?: boolean;
   preloadTrending?: boolean,
 
-  // query form style/content props
+  // main container style props
   containerClassName?: string;
+  containerStyle?: object;
+
+  // query form style/content props
   queryFormClassName?: string;
   queryFormInputClassName?: string;
   queryFormSubmitClassName?: string;
@@ -72,6 +75,8 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
     resultColumns: 3,
     showGiphyMark: true,
     preloadTrending: false,
+    containerClassName: "",
+    containerStyle: {},
     queryInputPlaceholder: 'Enter search text',
     suggestions: [],
     loaderContent: "Loading...",
@@ -211,6 +216,8 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
       preloadTrending,
 
       containerClassName,
+      containerStyle,
+
       queryFormClassName,
       queryFormInputClassName,
       queryFormSubmitClassName,
@@ -245,7 +252,8 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
 
     return (
       <div
-        className={containerClassName}>
+        className={containerClassName}
+        style={containerStyle}>
         <QueryForm
           queryInputPlaceholder={queryInputPlaceholder}
           onQueryChange={this.onQueryChange}

@@ -10,11 +10,6 @@ export interface ITrendingParams {
   offset: number;
 }
 
-export interface IRandomParams {
-  tag: string;
-  rating: Rating;
-}
-
 export interface ISearchParams {
   q: string;
   rating: Rating;
@@ -47,22 +42,10 @@ export class GiphyClient {
 
   /**
    * Load GIPHY trending endpoint
-   * @param params IRandomParams
+   * @param params ITrendingParams
    */
   public trendingGifs(params: ITrendingParams): Promise<ISearchResult> {
     return this.client.trending("gifs", params).then(response => {
-      console.log("DBG trendingGifs response", response);
-      return { gifObjects: response.data };
-    });
-  }
-
-  /**
-   * Load GIPHY random endpoint
-   * @param params ISearchParams
-   */
-  public randomGifs(params: IRandomParams): Promise<ISearchResult> {
-    return this.client.random("gifs", params).then(response => {
-      console.log("DBG reandomGifs response", response);
       return { gifObjects: response.data };
     });
   }

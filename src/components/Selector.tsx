@@ -21,7 +21,6 @@ export interface ISelectorProps {
   onGifSelected: (gifObject: IGifObject) => void;
   showGiphyMark?: boolean;
   preloadTrending?: boolean,
-  preloadRandom?: string,
 
   // query form style/content props
   queryFormClassName?: string;
@@ -72,7 +71,6 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
     resultColumns: 3,
     showGiphyMark: true,
     preloadTrending: false,
-    preloadRandom: "",
     queryInputPlaceholder: 'Enter search text',
     suggestions: [],
     loaderContent: "Loading...",
@@ -106,7 +104,6 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
     this.onQueryExecute = this.onQueryExecute.bind(this);
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
     this.onTrendingExecute = this.onTrendingExecute.bind(this);
-    this.onRandomExecute = this.onRandomExecute.bind(this);
   }
 
   /**
@@ -158,7 +155,6 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * Fired when the component is mounted if preloadTrending is set
    */
   public onTrendingExecute(): void {
-    console.log("DBG onTrendingExecute");
     const { rating, limit } = this.props;
 
     this.setState({
@@ -173,47 +169,12 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
         offset: 0
       })
       .then((result: ISearchResult) => {
-        console.log("DBG trending finished", result);
         this.setState({
           isPending: false,
           searchResult: result
         });
       })
       .catch((err: Error) => {
-        console.log("DBG trending finished error", err);
-        this.setState({
-          isPending: false,
-          searchError: err
-        });
-      });
-  }
-
-  /**
-   * Fired when the component is mounted if preloadRandom is set to a string
-   */
-  public onRandomExecute(): void {
-    console.log("DBG onRandomExecute");
-    const { preloadRandom, rating } = this.props;
-
-    this.setState({
-      isPending: true,
-      searchError: null
-    });
-
-    this.client
-      .randomGifs({
-        rating,
-        tag: preloadRandom
-      })
-      .then((result: ISearchResult) => {
-        console.log("DBG random finished", result);
-        this.setState({
-          isPending: false,
-          searchResult: result
-        });
-      })
-      .catch((err: Error) => {
-        console.log("DBG random finished err", err);
         this.setState({
           isPending: false,
           searchError: err
@@ -233,13 +194,8 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
   }
 
   public componentDidMount() {
-    console.log("DBG componentDidMount preloadTrending", this.props.preloadTrending, "preloadRandom", this.props.preloadRandom);
     if (this.props.preloadTrending) {
-      console.log("DBG   preloading trending!");
       this.onTrendingExecute();
-    } else if (this.props.preloadRandom.length > 0) {
-      console.log("DBG   preloading random!");
-      this.onRandomExecute();
     }
   }
 
@@ -252,7 +208,6 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
       resultColumns,
       showGiphyMark,
       preloadTrending,
-      preloadRandom,
 
       queryFormClassName,
       queryFormInputClassName,

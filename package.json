@@ -1,6 +1,6 @@
 {
   "name": "react-giphy-selector",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "description": "A search & select React.JS component for picking the perfect giphy.",
   "main": "lib/index.js",
   "typings": "./index.d.ts",

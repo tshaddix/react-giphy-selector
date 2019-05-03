@@ -155,7 +155,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
   }
 
   /**
-   * Fired when the component is mounted if 
+   * Fired when the component is mounted if preloadTrending is set
    */
   public onTrendingExecute(): void {
     console.log("DBG onRandomExecute");
@@ -189,7 +189,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
   }
 
   /**
-   * Fired when the component is mounted if preloadTrending is set
+   * Fired when the component is mounted if preloadRandom is set to a string
    */
   public onRandomExecute(): void {
     console.log("DBG onRandomExecute");
@@ -233,9 +233,12 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
   }
 
   public componentDidMount() {
+    console.log("DBG componentDidMount preloadTrending", this.props.preloadTrending, "preloadRandom", this.props.preloadRandom);
     if (this.props.preloadTrending) {
+      console.log("DBG   preloading trending!");
       setTimeout(100, this.onTrendingExecute);
     } else if (this.props.preloadRandom.length > 0) {
+      console.log("DBG   preloading random!");
       setTimeout(100, this.onRandomExecute);
     }
   }

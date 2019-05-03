@@ -158,11 +158,10 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * Fired when the component is mounted if 
    */
   public onTrendingExecute(): void {
-    console.log("onRandomExecute");
+    console.log("DBG onRandomExecute");
     const { rating, limit } = this.props;
 
     this.setState({
-      isPending: true,
       searchError: null
     });
 
@@ -173,14 +172,14 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
         offset: 0
       })
       .then((result: ISearchResult) => {
-        console.log("trending finished", result);
+        console.log("DBG trending finished", result);
         this.setState({
           isPending: false,
           searchResult: result
         });
       })
       .catch((err: Error) => {
-        console.log("trending finished error", err);
+        console.log("DBG trending finished error", err);
         this.setState({
           isPending: false,
           searchError: err
@@ -192,7 +191,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
    * Fired when the component is mounted if preloadTrending is set
    */
   public onRandomExecute(): void {
-    console.log("onRandomExecute");
+    console.log("DBG onRandomExecute");
     const { preloadRandom, rating } = this.props;
 
     this.setState({
@@ -206,14 +205,14 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
         tag: preloadRandom
       })
       .then((result: ISearchResult) => {
-        console.log("random finished", result);
+        console.log("DBG random finished", result);
         this.setState({
           isPending: false,
           searchResult: result
         });
       })
       .catch((err: Error) => {
-        console.log("random finished err", err);
+        console.log("DBG random finished err", err);
         this.setState({
           isPending: false,
           searchError: err

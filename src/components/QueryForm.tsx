@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as cn from "classnames";
 
 const defaultStyle = require("./QueryForm.css");
@@ -20,8 +21,6 @@ export interface IQueryFormProps {
 
 export class QueryForm extends React.Component<IQueryFormProps, {}> {
 
-  public inputRef: React.RefObject<HTMLInputElement>;
-
   public static defaultProps: Partial<IQueryFormProps> = {
     queryFormStyle: {},
     queryFormInputStyle: {},
@@ -33,7 +32,11 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
 
     this.onValueChange = this.onValueChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.inputRef = React.createRef();
+  }
+
+  refs: {
+    [string: string]: any;
+    searchInput: any;
   }
 
   /**
@@ -55,8 +58,13 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
 
   public componentDidMount() {
     if (this.props.queryFormAutoFocus) {
-      this.inputRef.current.focus();
+      this.focus();
     }
+  }
+
+  focus = () => {
+    let input = (ReactDOM.findDOMNode(this.refs.searchInput) as HTMLInputElement)
+    input.focus();
   }
 
   public render(): JSX.Element {
@@ -87,7 +95,7 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
             type="text"
             onChange={this.onValueChange}
             placeholder={queryInputPlaceholder}
-            ref={this.inputRef}
+            ref="searchInput"
           />
           <button
             style={queryFormSubmitStyle}

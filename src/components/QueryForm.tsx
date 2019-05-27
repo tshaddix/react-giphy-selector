@@ -36,7 +36,6 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
     this.onSubmit = this.onSubmit.bind(this);
     this.searchInput = null;
     this.setSearchInputRef = element => {
-      console.log("QueryForm/setSearchInputRef", element);
       this.searchInput = element;
     };
   }
@@ -60,7 +59,6 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
 
   public componentDidMount() {
     if (this.props.queryFormAutoFocus) {
-      console.log("QueryForm/componentDidMount searchInput", this.searchInput);
       this.searchInput.focus();
     }
   }

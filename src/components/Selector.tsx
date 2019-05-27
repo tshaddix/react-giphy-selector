@@ -27,6 +27,7 @@ export interface ISelectorProps {
   containerStyle?: object;
 
   // query form style/content props
+  queryFormAutoFocus?: boolean;
   queryFormClassName?: string;
   queryFormInputClassName?: string;
   queryFormSubmitClassName?: string;
@@ -218,6 +219,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
       containerClassName,
       containerStyle,
 
+      queryFormAutoFocus,
       queryFormClassName,
       queryFormInputClassName,
       queryFormSubmitClassName,
@@ -259,6 +261,7 @@ export class Selector extends React.Component<ISelectorProps, ISelectorState> {
           onQueryChange={this.onQueryChange}
           onQueryExecute={this.onQueryExecute}
           queryValue={query}
+          queryFormAutoFocus={queryFormAutoFocus}
           queryFormClassName={queryFormClassName}
           queryFormInputClassName={queryFormInputClassName}
           queryFormSubmitClassName={queryFormSubmitClassName}

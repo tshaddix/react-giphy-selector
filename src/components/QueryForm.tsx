@@ -4,6 +4,7 @@ import * as cn from "classnames";
 const defaultStyle = require("./QueryForm.css");
 
 export interface IQueryFormProps {
+  queryFormAutoFocus?: boolean;
   queryFormClassName?: string;
   queryFormInputClassName?: string;
   queryFormSubmitClassName?: string;
@@ -18,6 +19,9 @@ export interface IQueryFormProps {
 }
 
 export class QueryForm extends React.Component<IQueryFormProps, {}> {
+
+  public inputRef: React.RefObject<HTMLInputElement>;
+
   public static defaultProps: Partial<IQueryFormProps> = {
     queryFormStyle: {},
     queryFormInputStyle: {},
@@ -29,6 +33,7 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
 
     this.onValueChange = this.onValueChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.inputRef = React.createRef();
   }
 
   /**
@@ -48,10 +53,17 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
     this.props.onQueryExecute();
   }
 
+  public componentDidMount() {
+    if (this.props.queryFormAutoFocus) {
+      this.inputRef.current.focus();
+    }
+  }
+
   public render(): JSX.Element {
     const {
       queryValue,
       queryInputPlaceholder,
+      queryFormAutoFocus,
       queryFormClassName,
       queryFormInputClassName,
       queryFormSubmitClassName,
@@ -75,6 +87,7 @@ export class QueryForm extends React.Component<IQueryFormProps, {}> {
             type="text"
             onChange={this.onValueChange}
             placeholder={queryInputPlaceholder}
+            ref={this.inputRef}
           />
           <button
             style={queryFormSubmitStyle}

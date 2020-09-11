@@ -1,6 +1,6 @@
 {
   "name": "react-giphy-selector-bago",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A search & select React.JS component for picking the perfect giphy.",
   "main": "lib/index.js",
   "typings": "./index.d.ts",

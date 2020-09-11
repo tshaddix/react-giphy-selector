@@ -1,5 +1,5 @@
 {
-  "name": "react-giphy-selector",
+  "name": "react-giphy-selector-bago",
   "version": "0.0.4",
   "description": "A search & select React.JS component for picking the perfect giphy.",
   "main": "lib/index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tshaddix/react-giphy-selector.git"
+    "url": "git+https://github.com/bago2k4/react-giphy-selector.git"
   },
-  "author": "Tyler Shaddix <tylershaddix@gmail.com>",
+  "author": "Iacopo Carraro <bago2k4@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tshaddix/react-giphy-selector/issues"
+    "url": "https://github.com/bago2k4/react-giphy-selector/issues"
   },
-  "homepage": "https://github.com/tshaddix/react-giphy-selector#readme",
+  "homepage": "https://github.com/bago2k4/react-giphy-selector#readme",
   "devDependencies": {
     "@types/node": "^14.10.0",
     "@types/react-dom": "^16.9.8",
